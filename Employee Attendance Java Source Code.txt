@@ -1,0 +1,114 @@
+
+Connection con;
+    PreparedStatement pst;
+    ResultSet rs;
+    
+    public void Connect(){
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/attendancedb","root","");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+
+
+       private void showtabledata(){
+        
+        try {
+            int q;
+            pst = con.prepareStatement("select * from employee");
+            rs = pst.executeQuery();
+            ResultSetMetaData rss = rs.getMetaData();
+            q = rss.getColumnCount();
+            DefaultTableModel df = (DefaultTableModel)table1.getModel();
+            df.setRowCount(0);
+            while(rs.next()){
+                Vector v2 = new Vector();
+                for(int a=1; a<q; a++){
+                    v2.add(rs.getString("EmpId"));
+                    v2.add(rs.getString("EmployeeName"));
+                    v2.add(rs.getString("Position"));
+                    v2.add(rs.getString("Status"));
+                
+                }
+                
+                df.addRow(v2);
+
+
+
+
+
+        Add Code
+
+
+          try {
+            String EmpId = txtId.getText();
+            String EmployeeName = txtName.getText();
+            String Position = txtPosition.getText();
+            String Status = txtStatus.getText();
+            pst = con.prepareStatement("INSERT INTO employee(empid,employeename,position,status)VALUES(?,?,?,?)");
+            pst.setString(1,EmpId);
+            pst.setString(2,EmployeeName);
+            pst.setString(3,Position);
+            pst.setString(4,Status);
+            
+            int a = pst.executeUpdate();
+            
+            if (a==1){
+                
+                JOptionPane.showMessageDialog(this, "Record Added Successfully");
+                
+                }else{
+                
+                JOptionPane.showMessageDialog(this, "Error, Please Try Again");    
+
+
+
+
+        New Code
+
+
+
+        txtId.setText("");
+        txtName.setText("");
+        txtPosition.setText("");
+        txtStatus.setText("");
+
+
+
+      Display Code
+
+
+       showtabledata();
+
+
+
+
+
+      Delete Code
+
+
+      try {
+            String value1=txtId.getText();
+            String value2=txtName.getText();
+            String value3=txtPosition.getText();
+            String value4=txtStatus.getText();
+       
+            String sql="DELETE FROM employee where empid='"+value1+"'";
+            pst=con.prepareStatement(sql);
+            int deleteCount = pst.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Record Deleted Successfully");
+        } catch (SQLException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+
+
+
+         
